@@ -12,10 +12,6 @@ export default function Graph(props) {
   const [moedaCorrente, setMoedaCorrente] = useState("USD");
 
   function handleChange() {
-    // let dataInicial = props.dataInicial;
-    // let dataFinal = props.dataFinal;
-    // let moedaCorrente = props.moedaCorrente;
-
     if (!dataInicial || !dataFinal) {
       return null;
     } else {
@@ -24,7 +20,6 @@ export default function Graph(props) {
   }
 
   useEffect(() => {
-    setLoading(true);
     handleChange();
 
     axios
@@ -33,16 +28,15 @@ export default function Graph(props) {
       )
       .then((response) => {
         setPriceData({ ...response.data.bpi });
-        console.log(response.data.bpi);
       })
       .catch((err) => {
         console.log(err);
       });
-  });
+  }, [dataInicial, dataFinal, moedaCorrente]);
 
   useEffect(() => {
     if (!loading) {
-      function renderChart() {
+      const renderChart = () => {
         const ctx = document.getElementById("myCanvas").getContext("2d");
 
         if (chart) {
@@ -56,9 +50,9 @@ export default function Graph(props) {
             datasets: [
               {
                 label: "Histórico de preços BTC",
-                data: Object.values(priceData)
-                  .map((currentPriceObj) => currentPriceObj)
-                  .reverse(), // Array com os preços de fechamento
+                data: Object.values(priceData).map(
+                  (currentPriceObj) => currentPriceObj
+                ), // Array com os preços de fechamento
                 borderColor: "#0330fc",
                 backgroundColor: "#03b1fc",
                 fill: false,
@@ -68,11 +62,11 @@ export default function Graph(props) {
         });
 
         setChart(chartInstance);
-      }
+      };
 
       renderChart();
     }
-  }, [loading, priceData, chart]);
+  }, [setChart, loading, priceData]);
 
   const handleInitialDate = (event) => {
     setDataInicial(event.target.value);
