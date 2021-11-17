@@ -70,12 +70,14 @@ export default function Graph(props) {
 
   const handleInitialDate = (event) => {
     setDataInicial(event.target.value);
-    console.log(dataInicial);
   };
 
   const handleFinalDate = (event) => {
     setDataFinal(event.target.value);
-    console.log(dataFinal);
+  };
+
+  const handleMoeda = (event) => {
+    setMoedaCorrente(event.target.value);
   };
 
   return (
@@ -85,7 +87,7 @@ export default function Graph(props) {
         <input name="dataInicial" onChange={handleInitialDate} type="date" />
         <span>Até: </span>{" "}
         <input name="dataFinal" onChange={handleFinalDate} type="date" />
-        <select>
+        <select onChange={handleMoeda}>
           <option>USD</option>
           <option>EUR</option>
         </select>
